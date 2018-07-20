@@ -1,0 +1,22 @@
+
+test:
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/test.sqlite3
+
+development:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: nctuplus_development
+  host: localhost
+  username: { DEVELOP_USER_NAME }
+  password: { DEVELOP_USER_PASSWD }
+
+production:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: nctuplus
+  host: localhost
+  username: { PROD_USER_NAME }
+  password: { PROD_USER_PASSWD }
