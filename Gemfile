@@ -23,6 +23,10 @@ gem 'devise_token_auth'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  # Use faker to generate fake data
+  gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+  # Use facotry_bot to create fake model
+  gem 'factory_bot_rails'
   gem 'rspec-rails'
   
 end
