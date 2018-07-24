@@ -28,7 +28,6 @@ group :development, :test do
   # Use facotry_bot to create fake model
   gem 'factory_bot_rails'
   gem 'rspec-rails'
-  
 end
 
 group :development do
@@ -38,7 +37,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :test do 
+group :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 end
