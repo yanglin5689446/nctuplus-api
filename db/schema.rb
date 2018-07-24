@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(version: 20180721163912) do
     t.string   "name"
     t.string   "email"
     t.integer  "role",                                      default: 0
-    t.boolean  "agree_to_term_of_service"
-    t.boolean  "agree_to_share_course_table"
+    t.boolean  "agree_to_term_of_service",                  default: false,   null: false
+    t.boolean  "agree_to_share_course_table",               default: false,   null: false
     t.integer  "admission_year"
     t.text     "tokens",                      limit: 65535
     t.datetime "created_at",                                                  null: false

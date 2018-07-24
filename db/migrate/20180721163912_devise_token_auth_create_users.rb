@@ -35,8 +35,8 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :email
       t.integer :role, default: 0
-      t.boolean :agree_to_term_of_service
-      t.boolean :agree_to_share_course_table
+      t.boolean :agree_to_term_of_service, null: false, default: false
+      t.boolean :agree_to_share_course_table, null: false, default: false
       t.integer :admission_year
 
       ## Tokens
