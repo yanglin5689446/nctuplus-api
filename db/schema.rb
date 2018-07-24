@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180721163912) do
+ActiveRecord::Schema.define(version: 20180724094004) do
+  create_table "bulletins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "title", default: "untitled", null: false
+    t.string   "content"
+    t.integer  "type"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "author_id"
+    t.index ["author_id"], name: "index_bulletins_on_author_id", using: :btree
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "provider",                                  default: "email", null: false
     t.string   "uid",                                       default: "",      null: false
