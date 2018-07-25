@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180724094004) do
+ActiveRecord::Schema.define(version: 20180725095721) do
+  create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "name"
+    t.string   "isbn"
+    t.string   "authors"
+    t.string   "info"
+    t.string   "cover_image_url"
+    t.string   "preview_url"
+    t.integer  "user_id"
+    t.integer  "price",           default: 0, null: false
+    t.integer  "status",          default: 0, null: false
+    t.integer  "view_times",      default: 0, null: false
+    t.index ["user_id"], name: "index_books_on_user_id", using: :btree
+  end
+
   create_table "bulletins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
@@ -53,4 +69,6 @@ ActiveRecord::Schema.define(version: 20180724094004) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   end
+
+  add_foreign_key "books", "users"
 end
