@@ -4,7 +4,7 @@ class CreateBulletins < ActiveRecord::Migration[5.0]
       t.timestamps
       t.string :title, null: false, default: 'untitled'
       t.string :content
-      t.integer :type
+      t.integer :category
       t.datetime :begin_time
       t.datetime :end_time
       t.references :author, references: :users, index: true

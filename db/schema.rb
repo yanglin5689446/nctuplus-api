@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20180724094004) do
     t.datetime "updated_at",                      null: false
     t.string   "title", default: "untitled", null: false
     t.string   "content"
-    t.integer  "type"
+    t.integer  "category"
     t.datetime "begin_time"
     t.datetime "end_time"
     t.integer  "author_id"
