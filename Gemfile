@@ -19,6 +19,7 @@ gem 'puma', '~> 3.0'
 # gem 'rack-cors'
 # Use carrierwave to manage file upload
 gem 'carrierwave', '~> 1.0'
+gem 'carrierwave-base64'
 
 gem 'devise_token_auth'
 
