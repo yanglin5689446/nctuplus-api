@@ -20,5 +20,8 @@
 #Ignore all config
 *.yml
 
+#Ignore uploaded files
+/public/uploads/*
+
 # Ignore Byebug command history file.
 .byebug_history

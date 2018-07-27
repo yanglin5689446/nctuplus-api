@@ -4,7 +4,12 @@ FactoryBot.define do
     isbn { Faker::Code.isbn }
     authors { Faker::Book.author }
     info { Faker::Lorem.paragraph }
-    cover_image_url { Faker::Internet.url }
+    cover_image {
+      Rack::Test::UploadedFile.new(
+        Rails.root.join('spec', 'support', 'books', 'calculus.jpg'),
+        'image/jpeg'
+      )
+    }
     preview_url { Faker::Internet.url }
     user { create(:user) }
     price { Faker::Number.between(0, 3000) }
