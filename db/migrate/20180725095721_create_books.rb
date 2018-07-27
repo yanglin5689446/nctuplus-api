@@ -6,7 +6,7 @@ class CreateBooks < ActiveRecord::Migration[5.0]
       t.string :isbn
       t.string :authors
       t.string :info
-      t.string :cover_image_url
+      t.string :cover_image
       t.string :preview_url
       t.references :user, foreign_key: true, index: true
       t.integer :price, null: false, default: 0
