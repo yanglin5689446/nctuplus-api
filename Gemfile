@@ -17,6 +17,8 @@ gem 'puma', '~> 3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
+# Use carrierwave to manage file upload
+gem 'carrierwave', '~> 1.0'
 
 gem 'devise_token_auth'
 
