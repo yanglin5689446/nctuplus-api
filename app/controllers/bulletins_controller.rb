@@ -48,5 +48,9 @@ class BulletinsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def bulletin_params
     params.fetch(:bulletin, {})
+          .permit(
+            :title, :content, :catrgory,
+            :begin_time, :end_time, :author_id
+          )
   end
 end
