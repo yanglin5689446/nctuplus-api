@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180725095721) do
+ActiveRecord::Schema.define(version: 20180728064413) do
   create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
@@ -37,6 +37,23 @@ ActiveRecord::Schema.define(version: 20180725095721) do
     t.datetime "end_time"
     t.integer  "author_id"
     t.index ["author_id"], name: "index_bulletins_on_author_id", using: :btree
+  end
+
+  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.integer  "event_type"
+    t.string   "title", default: "untitled", null: false
+    t.string   "organization"
+    t.string   "location"
+    t.string   "url"
+    t.string   "content"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer  "user_id"
+    t.integer  "view_count", default: 0
+    t.string   "cover_image"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["user_id"], name: "index_events_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -71,4 +88,5 @@ ActiveRecord::Schema.define(version: 20180725095721) do
   end
 
   add_foreign_key "books", "users"
+  add_foreign_key "events", "users"
 end
