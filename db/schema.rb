@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20180725095721) do
     t.integer  "user_id"
     t.integer  "price",       default: 0, null: false
     t.integer  "status",      default: 0, null: false
-    t.integer  "view_times",  default: 0, null: false
+    t.integer  "view_count",  default: 0, null: false
     t.index ["user_id"], name: "index_books_on_user_id", using: :btree
   end
 
