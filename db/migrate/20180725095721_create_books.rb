@@ -11,7 +11,7 @@ class CreateBooks < ActiveRecord::Migration[5.0]
       t.references :user, foreign_key: true, index: true
       t.integer :price, null: false, default: 0
       t.integer :status, null: false, default: 0
-      t.integer :view_times, null: false, default: 0
+      t.integer :view_count, null: false, default: 0
     end
   end
 end
