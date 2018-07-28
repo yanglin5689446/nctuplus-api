@@ -14,6 +14,6 @@ FactoryBot.define do
     user { create(:user) }
     price { Faker::Number.between(0, 3000) }
     status { Faker::Number.between(0, 3) }
-    view_times { 0 }
+    view_count { 0 }
   end
 end
