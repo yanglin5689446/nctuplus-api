@@ -49,7 +49,7 @@ class BulletinsController < ApplicationController
   def bulletin_params
     params.fetch(:bulletin, {})
           .permit(
-            :title, :content, :catrgory, 
+            :title, :content, :catrgory,
             :begin_time, :end_time, :author_id
           )
   end
