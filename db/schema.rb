@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180729142056) do
+ActiveRecord::Schema.define(version: 20180729151302) do
   create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name"
     t.string   "isbn"
@@ -44,6 +44,17 @@ ActiveRecord::Schema.define(version: 20180729142056) do
     t.string   "code", limit: 1, null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name"
+    t.integer  "category", default: 0, null: false
+    t.string   "department_type", limit: 1
+    t.string   "code",            limit: 2
+    t.integer  "college_id"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["college_id"], name: "index_departments_on_college_id", using: :btree
   end
 
   create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -105,5 +116,6 @@ ActiveRecord::Schema.define(version: 20180729142056) do
   end
 
   add_foreign_key "books", "users"
+  add_foreign_key "departments", "colleges"
   add_foreign_key "events", "users"
 end
