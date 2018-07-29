@@ -10,10 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180728120840) do
+ActiveRecord::Schema.define(version: 20180729142056) do
   create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
     t.string   "name"
     t.string   "isbn"
     t.string   "authors"
@@ -24,6 +22,8 @@ ActiveRecord::Schema.define(version: 20180728120840) do
     t.integer  "price",       default: 0, null: false
     t.integer  "status",      default: 0, null: false
     t.integer  "view_count",  default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.index ["user_id"], name: "index_books_on_user_id", using: :btree
   end
 
@@ -37,6 +37,13 @@ ActiveRecord::Schema.define(version: 20180728120840) do
     t.datetime "end_time"
     t.integer  "author_id"
     t.index ["author_id"], name: "index_bulletins_on_author_id", using: :btree
+  end
+
+  create_table "colleges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string   "name"
+    t.string   "code", limit: 1, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
