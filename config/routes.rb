@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     scope 'v1' do
       get "colleges", to: 'colleges#index', as: :colleges_path
       get "departments", to: 'departments#index', as: :departments_path
+      get "teachers", to: 'teachers#index', as: :teachers_path
       resources :users, only: [:index]
       resources :bulletins
       resources :books
