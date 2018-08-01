@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :permanent_courses
   mount_devise_token_auth_for 'User', at: 'auth'
   scope 'api' do
     scope 'v1' do
@@ -9,6 +8,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index]
       resources :bulletins
       resources :books
+      resources :permanent_courses
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
