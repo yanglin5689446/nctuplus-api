@@ -1,0 +1,2 @@
+class PermanentCourse < ApplicationRecord
+end
