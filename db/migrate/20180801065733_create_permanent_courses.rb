@@ -7,6 +7,7 @@ class CreatePermanentCourses < ActiveRecord::Migration[5.0]
       t.string :description
       t.integer :category
       t.integer :grade
+      t.references :department, foreign_key: true, index: true
       t.timestamps
     end
   end
