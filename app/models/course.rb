@@ -6,4 +6,6 @@ class Course < ApplicationRecord
   has_many :teachers, through: :teachers_courses
   has_many :users_courses
   has_many :users, through: :users_courses
+  has_many :books_courses
+  has_many :books, through: :books_courses
 end
