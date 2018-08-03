@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :course_ratings
   mount_devise_token_auth_for 'User', at: 'auth'
   scope 'api' do
     scope 'v1' do
