@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_one :user
   has_many :users_events
   has_many :events, through: :users_events
+  has_many :users_cources
+  has_many :courses, through: :users_courses
 
   validates :email, uniqueness: true
   validates :name, length: { maximum: 16, message: "姓名過長(max:16)" }
