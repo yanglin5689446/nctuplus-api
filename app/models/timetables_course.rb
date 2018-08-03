@@ -1,0 +1,2 @@
+class TimetablesCourse < ApplicationRecord
+end
