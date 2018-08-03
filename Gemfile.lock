@@ -57,6 +57,8 @@ GEM
     carrierwave-base64 (2.7.0)
       carrierwave (>= 0.8.0)
       mime-types (~> 3.0)
+    childprocess (0.9.0)
+      ffi (~> 1.0, >= 1.0.11)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
     devise (4.4.3)
@@ -80,6 +82,7 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
+    iniparse (1.4.4)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -100,6 +103,9 @@ GEM
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
+    overcommit (0.45.0)
+      childprocess (~> 0.6, >= 0.6.3)
+      iniparse (~> 1.4)
     puma (3.12.0)
     rack (2.0.5)
     rack-test (0.6.3)
@@ -186,6 +192,7 @@ DEPENDENCIES
   faker!
   listen (~> 3.0.5)
   mysql2 (= 0.3.18)
+  overcommit
   puma (~> 3.0)
   rails (~> 5.0.0)
   rspec-rails
