@@ -18,6 +18,7 @@ FactoryBot.define do
     rollcall_frequency { Faker::Number.between(0, 4) }
     last_edit_user { create(:user) }
     permanent_course { create(:permanent_course) }
+    semester { create(:semester) }
     view_count { 0 }
   end
 end
