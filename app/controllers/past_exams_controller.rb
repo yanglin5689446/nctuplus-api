@@ -48,5 +48,6 @@ class PastExamsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def past_exam_params
     params.fetch(:past_exam, {})
+          .permit(:description, :file, :course_id)
   end
 end
