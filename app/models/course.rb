@@ -9,4 +9,5 @@ class Course < ApplicationRecord
   has_many :books_courses
   has_many :books, through: :books_courses
   has_many :course_rating
+
 end
