@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :bulletins
       resources :books
       resources :permanent_courses, only: [:index, :show]
-      resources :courses
+      resources :courses, only: [:index, :show, :update]
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -13,17 +13,6 @@ class CoursesController < ApplicationController
     render json: @course
   end
 
-  # POST /courses
-  def create
-    @course = Course.new(course_params)
-
-    if @course.save
-      render json: @course, status: :created, location: @course
-    else
-      render json: @course.errors, status: :unprocessable_entity
-    end
-  end
-
   # PATCH/PUT /courses/1
   def update
     if @course.update(course_params)
@@ -31,11 +20,6 @@ class CoursesController < ApplicationController
     else
       render json: @course.errors, status: :unprocessable_entity
     end
-  end
-
-  # DELETE /courses/1
-  def destroy
-    @course.destroy
   end
 
   private
@@ -48,5 +32,6 @@ class CoursesController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def course_params
     params.fetch(:course, {})
+          .permit(:assignment_record, :exam_record, :rollcall_frequency)
   end
 end
