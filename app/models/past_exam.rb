@@ -1,0 +1,2 @@
+class PastExam < ApplicationRecord
+end
