@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180803083131) do
+ActiveRecord::Schema.define(version: 20180803090706) do
 
-  create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "books", force: :cascade do |t|
     t.string   "name"
     t.string   "isbn"
     t.string   "authors"
@@ -25,19 +25,19 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.integer  "view_count",  default: 0, null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.index ["user_id"], name: "index_books_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_books_on_user_id"
   end
 
-  create_table "books_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "books_courses", force: :cascade do |t|
     t.integer  "book_id"
     t.integer  "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_books_courses_on_book_id", using: :btree
-    t.index ["course_id"], name: "index_books_courses_on_course_id", using: :btree
+    t.index ["book_id"], name: "index_books_courses_on_book_id"
+    t.index ["course_id"], name: "index_books_courses_on_course_id"
   end
 
-  create_table "bulletins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "bulletins", force: :cascade do |t|
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.string   "title",      default: "untitled", null: false
@@ -46,26 +46,26 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.datetime "begin_time"
     t.datetime "end_time"
     t.integer  "author_id"
-    t.index ["author_id"], name: "index_bulletins_on_author_id", using: :btree
+    t.index ["author_id"], name: "index_bulletins_on_author_id"
   end
 
-  create_table "colleges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "colleges", force: :cascade do |t|
     t.string   "name"
     t.string   "code",       limit: 1, null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
 
-  create_table "course_ratings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "course_ratings", force: :cascade do |t|
     t.integer  "course_id"
     t.integer  "category"
     t.integer  "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_course_ratings_on_course_id", using: :btree
+    t.index ["course_id"], name: "index_course_ratings_on_course_id"
   end
 
-  create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "courses", force: :cascade do |t|
     t.string   "code"
     t.string   "remarks"
     t.integer  "credit"
@@ -84,12 +84,12 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "semester_id"
-    t.index ["last_edit_user_id"], name: "index_courses_on_last_edit_user_id", using: :btree
-    t.index ["permanent_course_id"], name: "index_courses_on_permanent_course_id", using: :btree
-    t.index ["semester_id"], name: "index_courses_on_semester_id", using: :btree
+    t.index ["last_edit_user_id"], name: "index_courses_on_last_edit_user_id"
+    t.index ["permanent_course_id"], name: "index_courses_on_permanent_course_id"
+    t.index ["semester_id"], name: "index_courses_on_semester_id"
   end
 
-  create_table "departments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "departments", force: :cascade do |t|
     t.string   "name"
     t.integer  "category",                  default: 0, null: false
     t.string   "department_type", limit: 1
@@ -97,10 +97,10 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.integer  "college_id"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.index ["college_id"], name: "index_departments_on_college_id", using: :btree
+    t.index ["college_id"], name: "index_departments_on_college_id"
   end
 
-  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "events", force: :cascade do |t|
     t.integer  "event_type"
     t.string   "title",        default: "untitled", null: false
     t.string   "organization"
@@ -114,10 +114,10 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.string   "cover_image"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.index ["user_id"], name: "index_events_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
-  create_table "past_exams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "past_exams", force: :cascade do |t|
     t.string   "description"
     t.integer  "download_count", default: 0
     t.string   "file"
@@ -125,11 +125,11 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.integer  "course_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["course_id"], name: "index_past_exams_on_course_id", using: :btree
-    t.index ["uploader_id"], name: "index_past_exams_on_uploader_id", using: :btree
+    t.index ["course_id"], name: "index_past_exams_on_course_id"
+    t.index ["uploader_id"], name: "index_past_exams_on_uploader_id"
   end
 
-  create_table "permanent_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "permanent_courses", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
     t.string   "description"
@@ -137,45 +137,54 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "semesters", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "semesters", force: :cascade do |t|
     t.integer  "year"
     t.integer  "term"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "teachers", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "teachers", id: false, force: :cascade do |t|
     t.integer  "id"
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "teachers_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "teachers_courses", force: :cascade do |t|
     t.integer  "teacher_id"
     t.integer  "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_teachers_courses_on_course_id", using: :btree
-    t.index ["teacher_id"], name: "index_teachers_courses_on_teacher_id", using: :btree
+    t.index ["course_id"], name: "index_teachers_courses_on_course_id"
+    t.index ["teacher_id"], name: "index_teachers_courses_on_teacher_id"
   end
 
-  create_table "timetables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "timetables", force: :cascade do |t|
     t.integer  "user_id"
     t.boolean  "shareable",  default: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["user_id"], name: "index_timetables_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_timetables_on_user_id"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
-    t.string   "provider",                                  default: "email", null: false
-    t.string   "uid",                                       default: "",      null: false
-    t.string   "encrypted_password",                        default: "",      null: false
+  create_table "timetables_courses", force: :cascade do |t|
+    t.integer  "timetable_id"
+    t.integer  "course_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["course_id"], name: "index_timetables_courses_on_course_id"
+    t.index ["timetable_id"], name: "index_timetables_courses_on_timetable_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "provider",                    default: "email", null: false
+    t.string   "uid",                         default: "",      null: false
+    t.string   "encrypted_password",          default: "",      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.boolean  "allow_password_change",                     default: false
-    t.integer  "sign_in_count",                             default: 0,       null: false
+    t.boolean  "allow_password_change",       default: false
+    t.integer  "sign_in_count",               default: 0,       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -186,49 +195,45 @@ ActiveRecord::Schema.define(version: 20180803083131) do
     t.string   "unconfirmed_email"
     t.string   "name"
     t.string   "email"
-    t.integer  "role",                                      default: 0
-    t.boolean  "agree_to_term_of_service",                  default: false,   null: false
-    t.boolean  "agree_to_share_course_table",               default: false,   null: false
+    t.integer  "role",                        default: 0
+    t.boolean  "agree_to_term_of_service",    default: false,   null: false
+    t.boolean  "agree_to_share_course_table", default: false,   null: false
     t.integer  "admission_year"
-    t.text     "tokens",                      limit: 65535
-    t.datetime "created_at",                                                  null: false
-    t.datetime "updated_at",                                                  null: false
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
-    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
+    t.text     "tokens"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
-  create_table "users_course_ratings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "users_course_ratings", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "course_rating_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.index ["course_rating_id"], name: "index_users_course_ratings_on_course_rating_id", using: :btree
-    t.index ["user_id"], name: "index_users_course_ratings_on_user_id", using: :btree
+    t.index ["course_rating_id"], name: "index_users_course_ratings_on_course_rating_id"
+    t.index ["user_id"], name: "index_users_course_ratings_on_user_id"
   end
 
-  create_table "users_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "users_courses", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_users_courses_on_course_id", using: :btree
-    t.index ["user_id"], name: "index_users_courses_on_user_id", using: :btree
+    t.index ["course_id"], name: "index_users_courses_on_course_id"
+    t.index ["user_id"], name: "index_users_courses_on_user_id"
   end
 
-  create_table "users_events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "users_events", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "event_id"
     t.integer  "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_users_events_on_event_id", using: :btree
-    t.index ["user_id"], name: "index_users_events_on_user_id", using: :btree
+    t.index ["event_id"], name: "index_users_events_on_event_id"
+    t.index ["user_id"], name: "index_users_events_on_user_id"
   end
 
-  add_foreign_key "books", "users"
-  add_foreign_key "courses", "semesters"
-  add_foreign_key "departments", "colleges"
-  add_foreign_key "events", "users"
 end
