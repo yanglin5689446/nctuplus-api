@@ -13,7 +13,7 @@ class CreateCourses < ActiveRecord::Migration[5.0]
       t.integer :assignment_record
       t.integer :exam_record
       t.integer :rollcall_frequency
-      t.integer :view_count
+      t.integer :view_count, default: 0
       t.references :last_edit_user, references: :users, index: true
       t.belongs_to :permanent_course, index: true
       t.timestamps
