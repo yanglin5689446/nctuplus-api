@@ -22,6 +22,11 @@ class CoursesController < ApplicationController
     end
   end
 
+  # TODO: 實作評分邏輯
+  def rating
+
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
