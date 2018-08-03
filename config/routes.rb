@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :bulletins
       resources :books
       resources :past_exams
+      resources :events
       
       resources :permanent_courses, only: [:index, :show]
       resources :courses, only: [:index, :show, :update]
