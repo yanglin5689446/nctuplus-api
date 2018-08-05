@@ -7,7 +7,7 @@ FactoryBot.define do
     grade { Faker::Number.between(0, 4) }
     classroom { Faker::Number.between(100, 999).to_s }
     time_slots do
-      byte_array = 16.times.map { 0 }
+      byte_array = 12.times.map { 0 }
       rand(5).times { byte_array[rand(8)] |= 1 << rand(8) }
       byte_array.map(&:chr).reduce(:+)
     end

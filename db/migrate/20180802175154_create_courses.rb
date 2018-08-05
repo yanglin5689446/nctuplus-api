@@ -7,7 +7,7 @@ class CreateCourses < ActiveRecord::Migration[5.0]
       t.integer :requirement_type
       t.integer :grade
       t.string :classroom
-      t.binary :time_slots, limit: 16
+      t.binary :time_slots, limit: 12
       t.integer :registration_count
       t.integer :registration_limit
       t.integer :assignment_record
