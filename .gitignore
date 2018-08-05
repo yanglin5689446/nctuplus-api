@@ -20,6 +20,10 @@
 #Ignore all config
 *.yml
 
+# except these
+!.overcommit.yml
+!.rubocop.yml
+
 #Ignore uploaded files
 /public/uploads/*
 

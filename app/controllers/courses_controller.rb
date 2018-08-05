@@ -10,7 +10,11 @@ class CoursesController < ApplicationController
 
   # GET /courses/1
   def show
-    render json: @course
+    render json: @course, include: %I[
+      permanent_course
+      last_edit_user
+      course_ratings
+    ]
   end
 
   # PATCH/PUT /courses/1
@@ -22,7 +26,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  # TODO: 實作評分邏輯
+  # TODO: Implement rating logic
   def rating
 
   end
