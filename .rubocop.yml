@@ -1,6 +1,3 @@
-AllCops:
-  RunRailsCops: true
-
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:
   Max: 120
@@ -14,7 +11,24 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 1500
 
+Metrics/AbcSize:
+  Max: 30
+
 # Mixing the styles looks just silly.
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
+
+# Check with yard instead.
+Style/Documentation:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+# Chinese comment is OK
+Style/AsciiComments:
+  Enabled: false
 

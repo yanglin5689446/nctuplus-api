@@ -18,15 +18,15 @@ class Course < ApplicationRecord
   # before passing data to frontend.
   # TODO: should we do this at frontend?
   def convert_time_slots
-      time_slots
+    time_slots
       .chars.each_slice(2)
       .map { |data| data.join('').unpack('S')[0] }
-      .map.with_index { |data, index|
+      .map.with_index do |data, index|
         16.times
           .select { |i| data & (1 << i) > 0 }
           .map { |i| self.class.time_slot_codes.key(i) }
           .reduce((index + 1).to_s, :+)
-      }
+      end
       .select { |r| r.length > 1 }
       .join
   end
