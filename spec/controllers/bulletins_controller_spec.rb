@@ -27,44 +27,44 @@ RSpec.describe BulletinsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Bulletin. As you add validations to Bulletin, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:valid_attributes) do
+    skip('Add a hash of attributes valid for your model')
+  end
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:invalid_attributes) do
+    skip('Add a hash of attributes invalid for your model')
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # BulletinsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "returns a success response" do
+  describe 'GET #index' do
+    it 'returns a success response' do
       bulletin = Bulletin.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_success
     end
   end
 
-  describe "GET #show" do
-    it "returns a success response" do
+  describe 'GET #show' do
+    it 'returns a success response' do
       bulletin = Bulletin.create! valid_attributes
       get :show, params: { id: bulletin.to_param }, session: valid_session
       expect(response).to be_success
     end
   end
 
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Bulletin" do
-        expect {
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'creates a new Bulletin' do
+        expect do
           post :create, params: { bulletin: valid_attributes }, session: valid_session
-        }.to change(Bulletin, :count).by(1)
+        end.to change(Bulletin, :count).by(1)
       end
 
-      it "renders a JSON response with the new bulletin" do
+      it 'renders a JSON response with the new bulletin' do
         post :create, params: { bulletin: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
@@ -72,8 +72,8 @@ RSpec.describe BulletinsController, type: :controller do
       end
     end
 
-    context "with invalid params" do
-      it "renders a JSON response with errors for the new bulletin" do
+    context 'with invalid params' do
+      it 'renders a JSON response with errors for the new bulletin' do
         post :create, params: { bulletin: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
@@ -81,20 +81,20 @@ RSpec.describe BulletinsController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+  describe 'PUT #update' do
+    context 'with valid params' do
+      let(:new_attributes) do
+        skip('Add a hash of attributes valid for your model')
+      end
 
-      it "updates the requested bulletin" do
+      it 'updates the requested bulletin' do
         bulletin = Bulletin.create! valid_attributes
         put :update, params: { id: bulletin.to_param, bulletin: new_attributes }, session: valid_session
         bulletin.reload
-        skip("Add assertions for updated state")
+        skip('Add assertions for updated state')
       end
 
-      it "renders a JSON response with the bulletin" do
+      it 'renders a JSON response with the bulletin' do
         bulletin = Bulletin.create! valid_attributes
 
         put :update, params: { id: bulletin.to_param, bulletin: valid_attributes }, session: valid_session
@@ -103,8 +103,8 @@ RSpec.describe BulletinsController, type: :controller do
       end
     end
 
-    context "with invalid params" do
-      it "renders a JSON response with errors for the bulletin" do
+    context 'with invalid params' do
+      it 'renders a JSON response with errors for the bulletin' do
         bulletin = Bulletin.create! valid_attributes
 
         put :update, params: { id: bulletin.to_param, bulletin: invalid_attributes }, session: valid_session
@@ -114,12 +114,12 @@ RSpec.describe BulletinsController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
-    it "destroys the requested bulletin" do
+  describe 'DELETE #destroy' do
+    it 'destroys the requested bulletin' do
       bulletin = Bulletin.create! valid_attributes
-      expect {
+      expect do
         delete :destroy, params: { id: bulletin.to_param }, session: valid_session
-      }.to change(Bulletin, :count).by(-1)
+      end.to change(Bulletin, :count).by(-1)
     end
   end
 end

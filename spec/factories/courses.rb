@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :course do
-    code { Faker::Number.between(1000000, 9999999) }
+    code { Faker::Number.between(1_000_000, 9_999_999) }
     remarks { Faker::Lorem.paragraph }
     credit { Faker::Number.between(0, 15) }
     requirement_type { Faker::Number.between(0, 10) }

@@ -1,7 +1,7 @@
 class CreateTeachers < ActiveRecord::Migration[5.0]
   def change
     create_table :teachers, id: false do |t|
-      t.integer :id, options: "PRIMARY KEY"
+      t.integer :id, options: 'PRIMARY KEY'
       t.string :name
       t.timestamps
     end

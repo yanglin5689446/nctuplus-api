@@ -27,9 +27,7 @@ class CoursesController < ApplicationController
   end
 
   # TODO: Implement rating logic
-  def rating
-
-  end
+  def rating; end
 
   private
 

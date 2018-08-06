@@ -1,3 +1,8 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - spec/**/*.rb
+    - bin/*
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:
   Max: 120
@@ -5,7 +10,7 @@ Metrics/LineLength:
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength:
-  Max: 20
+  Max: 30
 
 # The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
 Metrics/ClassLength:
@@ -26,6 +31,9 @@ Style/MultilineBlockChain:
   Enabled: false
 
 Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Style/SymbolArray:
   Enabled: false
 
 # Chinese comment is OK
