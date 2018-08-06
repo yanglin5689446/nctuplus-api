@@ -7,6 +7,7 @@ test:
 
 development:
   adapter: mysql2
+  url: <%= ENV['DATABASE_URL'] %>
   encoding: utf8mb4
   database: nctuplus_development
   host: localhost

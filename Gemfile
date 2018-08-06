@@ -22,14 +22,14 @@ gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-base64'
 
 gem 'devise_token_auth'
+# Use faker to generate fake data
+gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
+# Use facotry_bot to create fake model
+gem 'factory_bot_rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  # Use faker to generate fake data
-  gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
-  # Use facotry_bot to create fake model
-  gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'rubocop'
 end
@@ -44,7 +44,7 @@ group :development do
 end
 
 group :test do
-  # Use sqlite3 as the database for Active Record
+  # We have to move it here for deployment, thanks to "https://github.com/rails/rails/issues/27299"
   gem 'sqlite3'
 end
 
