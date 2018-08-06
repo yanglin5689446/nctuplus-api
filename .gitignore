@@ -23,6 +23,7 @@
 # except these
 !.overcommit.yml
 !.rubocop.yml
+!.travis.yml
 
 #Ignore uploaded files
 /public/uploads/*
