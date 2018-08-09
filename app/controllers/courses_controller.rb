@@ -26,8 +26,17 @@ class CoursesController < ApplicationController
     end
   end
 
-  # TODO: Implement rating logic
-  def rating; end
+  # @todo: 現在只是新建 course_rating model，
+  # 等 auth 系統好了之後根據傳進來的 user token 建立與 course_rating 與 user 關聯
+  def rating
+    course_rating_params = params.permit(:category, :score, :course_id)
+    course_rating = CourseRating.new(course_rating_params)
+    if course_rating.save
+      render json: course_rating, status: :created
+    else
+      render json: course_rating.errors, status: :unprocessable_entity
+    end
+  end
 
   private
 
