@@ -1,4 +1,5 @@
 # README
+[![Build Status](https://travis-ci.org/yanglin5689446/nctuplus-api.svg?branch=master)](https://travis-ci.org/yanglin5689446/nctuplus-api)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
