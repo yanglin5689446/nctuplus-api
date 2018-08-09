@@ -28,11 +28,7 @@ RSpec.describe EventsController, type: :controller do
   # Event. As you add validations to Event, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    FactoryBot.attributes_for :event
   end
 
   # This should return the minimal set of values that should be in the session
@@ -71,27 +67,17 @@ RSpec.describe EventsController, type: :controller do
         expect(response.location).to eq(event_url(Event.last))
       end
     end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new event' do
-        post :create, params: { event: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
   end
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:new_attributes) {{ title: :yee }}
 
       it 'updates the requested event' do
         event = Event.create! valid_attributes
         put :update, params: { id: event.to_param, event: new_attributes }, session: valid_session
         event.reload
-        skip('Add assertions for updated state')
+        expect(event.title).to eq('yee')
       end
 
       it 'renders a JSON response with the event' do
@@ -99,16 +85,6 @@ RSpec.describe EventsController, type: :controller do
 
         put :update, params: { id: event.to_param, event: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the event' do
-        event = Event.create! valid_attributes
-
-        put :update, params: { id: event.to_param, event: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
     end
