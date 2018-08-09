@@ -77,4 +77,13 @@ RSpec.describe CoursesController, type: :controller do
     end
   end
 
+  describe 'POST #rating' do
+    let(:rating_params) {{ category: rand(3), score: rand(5) }}
+    it 'create user rating for course' do
+      course = Course.create! valid_attributes
+      post :rating, params: { course_id: course.id, **rating_params }, session: valid_session
+      expect(response).to have_http_status(:created)
+    end
+  end
+
 end
