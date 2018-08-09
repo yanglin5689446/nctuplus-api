@@ -40,3 +40,5 @@ Style/SymbolArray:
 Style/AsciiComments:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
