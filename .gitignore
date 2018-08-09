@@ -24,6 +24,7 @@
 !.overcommit.yml
 !.rubocop.yml
 !.travis.yml
+!docker-compose.yml
 
 #Ignore uploaded files
 /public/uploads/*
