@@ -28,11 +28,7 @@ RSpec.describe BulletinsController, type: :controller do
   # Bulletin. As you add validations to Bulletin, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    FactoryBot.attributes_for :bulletin
   end
 
   # This should return the minimal set of values that should be in the session
@@ -71,27 +67,17 @@ RSpec.describe BulletinsController, type: :controller do
         expect(response.location).to eq(bulletin_url(Bulletin.last))
       end
     end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new bulletin' do
-        post :create, params: { bulletin: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
   end
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:new_attributes) {{ title: :whatever }}
 
       it 'updates the requested bulletin' do
         bulletin = Bulletin.create! valid_attributes
         put :update, params: { id: bulletin.to_param, bulletin: new_attributes }, session: valid_session
         bulletin.reload
-        skip('Add assertions for updated state')
+        expect(bulletin.title).to eq('whatever')
       end
 
       it 'renders a JSON response with the bulletin' do
@@ -99,16 +85,6 @@ RSpec.describe BulletinsController, type: :controller do
 
         put :update, params: { id: bulletin.to_param, bulletin: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the bulletin' do
-        bulletin = Bulletin.create! valid_attributes
-
-        put :update, params: { id: bulletin.to_param, bulletin: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
     end
