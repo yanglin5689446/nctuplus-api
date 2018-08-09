@@ -28,11 +28,7 @@ RSpec.describe PastExamsController, type: :controller do
   # PastExam. As you add validations to PastExam, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    FactoryBot.attributes_for :past_exam
   end
 
   # This should return the minimal set of values that should be in the session
@@ -71,27 +67,17 @@ RSpec.describe PastExamsController, type: :controller do
         expect(response.location).to eq(past_exam_url(PastExam.last))
       end
     end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new past_exam' do
-        post :create, params: { past_exam: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
   end
 
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:new_attributes) {{ description: :abcdefg }}
 
       it 'updates the requested past_exam' do
         past_exam = PastExam.create! valid_attributes
         put :update, params: { id: past_exam.to_param, past_exam: new_attributes }, session: valid_session
         past_exam.reload
-        skip('Add assertions for updated state')
+        expect(past_exam.description).to eq('abcdefg')
       end
 
       it 'renders a JSON response with the past_exam' do
@@ -99,16 +85,6 @@ RSpec.describe PastExamsController, type: :controller do
 
         put :update, params: { id: past_exam.to_param, past_exam: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the past_exam' do
-        past_exam = PastExam.create! valid_attributes
-
-        put :update, params: { id: past_exam.to_param, past_exam: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
       end
     end
