@@ -28,11 +28,7 @@ RSpec.describe SemestersController, type: :controller do
   # Semester. As you add validations to Semester, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
-
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    FactoryBot.attributes_for :semester
   end
 
   # This should return the minimal set of values that should be in the session
@@ -45,81 +41,6 @@ RSpec.describe SemestersController, type: :controller do
       semester = Semester.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_success
-    end
-  end
-
-  describe 'GET #show' do
-    it 'returns a success response' do
-      semester = Semester.create! valid_attributes
-      get :show, params: { id: semester.to_param }, session: valid_session
-      expect(response).to be_success
-    end
-  end
-
-  describe 'POST #create' do
-    context 'with valid params' do
-      it 'creates a new Semester' do
-        expect do
-          post :create, params: { semester: valid_attributes }, session: valid_session
-        end.to change(Semester, :count).by(1)
-      end
-
-      it 'renders a JSON response with the new semester' do
-        post :create, params: { semester: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(semester_url(Semester.last))
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new semester' do
-        post :create, params: { semester: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-  end
-
-  describe 'PUT #update' do
-    context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
-
-      it 'updates the requested semester' do
-        semester = Semester.create! valid_attributes
-        put :update, params: { id: semester.to_param, semester: new_attributes }, session: valid_session
-        semester.reload
-        skip('Add assertions for updated state')
-      end
-
-      it 'renders a JSON response with the semester' do
-        semester = Semester.create! valid_attributes
-
-        put :update, params: { id: semester.to_param, semester: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the semester' do
-        semester = Semester.create! valid_attributes
-
-        put :update, params: { id: semester.to_param, semester: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-  end
-
-  describe 'DELETE #destroy' do
-    it 'destroys the requested semester' do
-      semester = Semester.create! valid_attributes
-      expect do
-        delete :destroy, params: { id: semester.to_param }, session: valid_session
-      end.to change(Semester, :count).by(-1)
     end
   end
 end
