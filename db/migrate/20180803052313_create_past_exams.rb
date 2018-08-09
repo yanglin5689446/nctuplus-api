@@ -1,4 +1,4 @@
-class CreatePastExams < ActiveRecord::Migration[5.0]
+class CreatePastExams < ActiveRecord::Migration[5.2]
   def change
     create_table :past_exams do |t|
       t.string :description
