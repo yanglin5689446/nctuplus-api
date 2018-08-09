@@ -28,7 +28,7 @@ RSpec.describe CoursesController, type: :controller do
   # Course. As you add validations to Course, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    FactoryBot.attributes_for :course
   end
 
   let(:invalid_attributes) do
@@ -56,42 +56,15 @@ RSpec.describe CoursesController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
-    context 'with valid params' do
-      it 'creates a new Course' do
-        expect do
-          post :create, params: { course: valid_attributes }, session: valid_session
-        end.to change(Course, :count).by(1)
-      end
-
-      it 'renders a JSON response with the new course' do
-        post :create, params: { course: valid_attributes }, session: valid_session
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(course_url(Course.last))
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new course' do
-        post :create, params: { course: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
-  end
-
   describe 'PUT #update' do
     context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+      let(:new_attributes) {{ rollcall_frequency: 3 }}
 
       it 'updates the requested course' do
         course = Course.create! valid_attributes
         put :update, params: { id: course.to_param, course: new_attributes }, session: valid_session
         course.reload
-        skip('Add assertions for updated state')
+        expect(course.rollcall_frequency).to eq(3)
       end
 
       it 'renders a JSON response with the course' do
@@ -102,24 +75,6 @@ RSpec.describe CoursesController, type: :controller do
         expect(response.content_type).to eq('application/json')
       end
     end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the course' do
-        course = Course.create! valid_attributes
-
-        put :update, params: { id: course.to_param, course: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
-      end
-    end
   end
 
-  describe 'DELETE #destroy' do
-    it 'destroys the requested course' do
-      course = Course.create! valid_attributes
-      expect do
-        delete :destroy, params: { id: course.to_param }, session: valid_session
-      end.to change(Course, :count).by(-1)
-    end
-  end
 end
