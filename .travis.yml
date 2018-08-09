@@ -1,14 +1,20 @@
+sudo: false
+branches:
+  only:
+  - master
+  - stable
 
-language: ruby
-
-rvm:
-  - 2.5.1
-
-before_script:
-  - cp config/database.yml.example config/database.yml
-  - bin/rake db:create
-
-script:
-  - bundle exec rails db:migrate RAILS_ENV=test
-  - bundle exec rspec
-  - bundle exec overcommit --sign && bundle exec overcommit --run
+jobs:
+  include:
+    - language: ruby
+      rvm:
+        - 2.5.1
+      before_script:
+        - cp config/database.yml.example config/database.yml
+        - bin/rake db:create
+      script:
+        - bundle exec rails db:migrate RAILS_ENV=test >> travis.log
+        - bundle exec rspec
+        - bundle exec overcommit --sign && bundle exec overcommit --run
+      after_failure:
+        - cat travis.log
