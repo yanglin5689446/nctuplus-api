@@ -20,10 +20,10 @@ class Course < ApplicationRecord
   def convert_time_slots
     time_slots
       .chars.each_slice(2)
-      .map { |data| data.join('').unpack('S')[0] }
+      .map { |data| data.join('').unpack1('S') }
       .map.with_index do |data, index|
         16.times
-          .select { |i| data & (1 << i) > 0 }
+          .select { |i| (data & (1 << i)).positive? }
           .map { |i| self.class.time_slot_codes.key(i) }
           .reduce((index + 1).to_s, :+)
       end
