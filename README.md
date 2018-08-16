@@ -1,12 +1,9 @@
 # README
 [![Build Status](https://travis-ci.org/yanglin5689446/nctuplus-api.svg?branch=master)](https://travis-ci.org/yanglin5689446/nctuplus-api)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[API 文件](https://hackmd.io/c/rkSEZBFNZ/%2Fs%2FSyb1Xq3rX)
 
-Things you may want to cover:
-
-* Ruby version
+* Ruby version: 2.5.1
 
 * System dependencies
 
@@ -22,9 +19,7 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
-
-## Setup
+## 配置
 ```
 $ bundle install
 $ overcommit --install
