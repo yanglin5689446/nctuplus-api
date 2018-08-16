@@ -3,9 +3,18 @@ class CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.all
+    page = params[:page].try(:to_i) || 1
+    per_page = params[:per_page].try(:to_i) || 25
+    filters = Course.ransack(params[:q])
 
-    render json: @courses
+    @courses = filters.result(distnct: true).page(page).per(per_page)
+
+    render json: {
+      current_page: page,
+      total_pages: @courses.total_pages,
+      total_count: @courses.total_count,
+      data: @courses
+    }
   end
 
   # GET /courses/1
