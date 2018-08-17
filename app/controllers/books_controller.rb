@@ -3,9 +3,17 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all
+    page = params[:page].try(:to_i) || 1
+    per_page = params[:per_page].try(:to_i) || 25
+    filters = Book.ransack(params[:q])
+    @books = filters.result(distnct: true).page(page).per(per_page)
 
-    render json: @books
+    render json: {
+      current_page: page,
+      total_pages: @books.total_pages,
+      total_count: @books.total_count,
+      data: @books
+    }
   end
 
   # GET /books/1
