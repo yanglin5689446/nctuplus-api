@@ -22,16 +22,21 @@ gem 'puma', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-# use ransack for params filter
+# Use ransack for params filter
 gem 'ransack', '>= 2.0.0'
-# use kaminari gem to do pagination
+# Use kaminari gem to do pagination
 gem 'kaminari'
 
 # Use carrierwave to manage file upload
 gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-base64'
 
+# User Auth
 gem 'devise_token_auth'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
+
 # Use faker to generate fake data
 gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
 # Use facotry_bot to create fake model
