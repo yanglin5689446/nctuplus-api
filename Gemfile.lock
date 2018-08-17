@@ -89,6 +89,18 @@ GEM
       concurrent-ruby (~> 1.0)
     iniparse (1.4.4)
     jaro_winkler (1.5.1)
+    kaminari (1.1.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.1.1)
+      kaminari-activerecord (= 1.1.1)
+      kaminari-core (= 1.1.1)
+    kaminari-actionview (1.1.1)
+      actionview
+      kaminari-core (= 1.1.1)
+    kaminari-activerecord (1.1.1)
+      activerecord
+      kaminari-core (= 1.1.1)
+    kaminari-core (1.1.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -149,6 +161,11 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     rake (12.3.1)
+    ransack (2.0.0)
+      actionpack (>= 5.0)
+      activerecord (>= 5.0)
+      activesupport (>= 5.0)
+      i18n
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -216,11 +233,13 @@ DEPENDENCIES
   devise_token_auth
   factory_bot_rails
   faker!
+  kaminari
   listen (~> 3.0.5)
   mysql2 (>= 0.4.10)
   overcommit
   puma (~> 3.0)
   rails (~> 5.2.0)
+  ransack (>= 2.0.0)
   rspec-rails
   rubocop
   spring

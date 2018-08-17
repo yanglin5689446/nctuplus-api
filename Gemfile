@@ -21,6 +21,12 @@ gem 'puma', '~> 3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
+
+# use ransack for params filter
+gem 'ransack', '>= 2.0.0'
+# use kaminari gem to do pagination
+gem 'kaminari'
+
 # Use carrierwave to manage file upload
 gem 'carrierwave', '~> 1.0'
 gem 'carrierwave-base64'
