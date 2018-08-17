@@ -3,9 +3,18 @@ class PastExamsController < ApplicationController
 
   # GET /past_exams
   def index
-    @past_exams = PastExam.all
+    page = params[:page].try(:to_i) || 1
+    per_page = params[:per_page].try(:to_i) || 25
+    filters = PastExam.ransack(params[:q])
 
-    render json: @past_exams
+    @past_exams = filters.result(distnct: true).page(page).per(per_page)
+
+    render json: {
+      current_page: page,
+      total_pages: @past_exams.total_pages,
+      total_count: @past_exams.total_count,
+      data: @past_exams
+    }
   end
 
   # GET /past_exams/1
