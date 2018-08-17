@@ -18,6 +18,8 @@ class BooksController < ApplicationController
 
   # GET /books/1
   def show
+    @book.view_count += 1
+    @book.save
     render json: @book
   end
 
