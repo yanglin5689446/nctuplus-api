@@ -1,0 +1,2 @@
+class UsersCourseRating < ApplicationRecord
+end
