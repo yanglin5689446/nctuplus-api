@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :course_ratings, through: :users_course_ratings
   has_many :past_exams, foreign_key: :uploader_id
   has_many :books
-  has_many :timetable
+  has_many :timetables
 
   validates :email, uniqueness: true
   validates :name, length: { maximum: 16, message: '姓名過長(max:16)' }

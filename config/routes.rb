@@ -23,7 +23,7 @@ Rails.application.routes.draw do
         get '/courses', to: 'info#courses', as: :my_courses
         get '/past_exams', to: 'info#past_exams', as: :my_past_exams
         get '/graduation_progress', to: 'info#graduation_progress', as: :my_graduation_progress
-        resources :timetables, controller: :timetables_controller
+        resources :timetables
       end
     end
   end

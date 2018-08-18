@@ -1,52 +1,50 @@
 class My::TimetablesController < ApplicationController
   before_action :set_timetable, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
-  # GET /timetables
+  # GET /my/timetables
   def index
-    @timetables = Timetable.all
+    timetables = current_user.timetables
 
-    render json: @timetables
+    render json: timetables
   end
 
-  # GET /timetables/1
+  # GET /my/timetables/1
   def show
-    render json: @timetable
+    showable = @timetable.user == current_user || @timetable.shareable
+    render(json: @timetable, include: [:courses]) if showable
   end
 
-  # POST /timetables
+  # POST /my/timetables
   def create
-    @timetable = Timetable.new(timetable_params)
+    @timetable = Timetable.new(user_id: current_user.id)
 
     if @timetable.save
-      render json: @timetable, status: :created, location: @timetable
+      render json: @timetable, status: :created, location: my_timetable_url(@timetable)
     else
       render json: @timetable.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /timetables/1
+  # @todo: 課表新增/刪除課程邏輯
+  # PATCH/PUT /my/timetables/1
   def update
-    if @timetable.update(timetable_params)
+    if @timetable
       render json: @timetable
     else
       render json: @timetable.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /timetables/1
+  # DELETE /my/timetables/1
   def destroy
-    @timetable.destroy
+    @timetable.destroy if @timetable.user == current_user
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_timetable
-    @timetable = Timetable.find(params[:id])
-  end
-
-  # Only allow a trusted parameter "white list" through.
-  def timetable_params
-    params.fetch(:timetable, {})
+    @timetable = Timetable.includes(:courses).find(params[:id])
   end
 end
