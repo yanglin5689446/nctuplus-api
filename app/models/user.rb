@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :events, through: :users_events
   has_many :users_courses
   has_many :courses, through: :users_courses
+  has_many :users_course_ratings
+  has_many :course_ratings, through: :users_course_ratings
   has_many :timetable
 
   validates :email, uniqueness: true
