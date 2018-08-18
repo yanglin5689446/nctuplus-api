@@ -40,7 +40,7 @@ RSpec.describe PastExamsController, type: :controller do
     it 'returns a success response' do
       past_exam = PastExam.create! valid_attributes
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe PastExamsController, type: :controller do
     it 'returns a success response' do
       past_exam = PastExam.create! valid_attributes
       get :show, params: { id: past_exam.to_param }, session: valid_session
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 

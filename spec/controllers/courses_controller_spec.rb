@@ -44,7 +44,7 @@ RSpec.describe CoursesController, type: :controller do
     it 'returns a success response' do
       course = Course.create! valid_attributes
       get :index, params: {}
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe CoursesController, type: :controller do
     it 'returns a success response' do
       course = Course.create! valid_attributes
       get :show, params: { id: course.to_param }
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
