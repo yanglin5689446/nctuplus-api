@@ -1,4 +1,4 @@
-class TimetablesController < ApplicationController
+class My::TimetablesController < ApplicationController
   before_action :set_timetable, only: [:show, :update, :destroy]
 
   # GET /timetables
