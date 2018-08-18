@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:rating]
 
   # GET /courses
   def index
@@ -35,11 +36,28 @@ class CoursesController < ApplicationController
     end
   end
 
-  # @todo: 現在只是新建 course_rating model，
-  # 等 auth 系統好了之後根據傳進來的 user token 建立與 course_rating 與 user 關聯
+  # @todo: 現在只是新建 course_rating model
+  # 更新評分的 action，若已經評分過該課程的該面向則更新分數
   def rating
-    course_rating_params = params.permit(:category, :score, :course_id)
-    course_rating = CourseRating.new(course_rating_params)
+    rating_params = params.permit(:category, :score, :course_id)
+    # 確認先前是否已經評分過
+    previous_ratings = current_user.course_ratings.select do |rating|
+      rating.category == rating_params[:category].to_i &&
+      rating.course_id == rating_params[:course_id].to_i
+    end
+    previous_rating = previous_ratings.first
+
+    # 若有，更新分數
+    if previous_rating.present?
+      course_rating = previous_rating
+      course_rating.update(score: rating_params[:score])
+    # 若沒有，新增一個 CoureseRatingModel，並加進去 user 和 course 的評分中
+    else
+      course_rating = CourseRating.new(rating_params)
+      current_user.course_ratings << course_rating
+      current_user.save
+    end
+
     if course_rating.save
       render json: course_rating, status: :created
     else

@@ -35,15 +35,15 @@ RSpec.describe CoursesController, type: :controller do
     skip('Add a hash of attributes invalid for your model')
   end
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # CoursesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:current_user) { FactoryBot.create :user }
+  before(:each) do
+    request.headers.merge! current_user.create_new_auth_token
+  end
 
   describe 'GET #index' do
     it 'returns a success response' do
       course = Course.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
       expect(response).to be_success
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe CoursesController, type: :controller do
   describe 'GET #show' do
     it 'returns a success response' do
       course = Course.create! valid_attributes
-      get :show, params: { id: course.to_param }, session: valid_session
+      get :show, params: { id: course.to_param }
       expect(response).to be_success
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe CoursesController, type: :controller do
 
       it 'updates the requested course' do
         course = Course.create! valid_attributes
-        put :update, params: { id: course.to_param, course: new_attributes }, session: valid_session
+        put :update, params: { id: course.to_param, course: new_attributes }
         course.reload
         expect(course.rollcall_frequency).to eq(3)
       end
@@ -70,7 +70,7 @@ RSpec.describe CoursesController, type: :controller do
       it 'renders a JSON response with the course' do
         course = Course.create! valid_attributes
 
-        put :update, params: { id: course.to_param, course: valid_attributes }, session: valid_session
+        put :update, params: { id: course.to_param, course: valid_attributes }
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
       end
@@ -78,11 +78,32 @@ RSpec.describe CoursesController, type: :controller do
   end
 
   describe 'POST #rating' do
-    let(:rating_params) {{ category: rand(3), score: rand(5) }}
+    let(:rating) { FactoryBot.attributes_for :course_rating, category: 1 }
+    let(:new_rating) { FactoryBot.attributes_for :course_rating, category: 1 }
+
     it 'create user rating for course' do
       course = Course.create! valid_attributes
-      post :rating, params: { course_id: course.id, **rating_params }, session: valid_session
+      post :rating, params: { course_id: course.id, **rating }
       expect(response).to have_http_status(:created)
+      expect(course.course_ratings.size).to eq 1
+    end
+    it 'update user rating if a course rating already exists' do
+      course = Course.create! valid_attributes
+
+      post :rating, params: { course_id: course.id, **rating }
+      expect(response).to have_http_status(:created)
+
+      response_json = JSON.parse(response.body).symbolize_keys
+      expect(response_json).to have_key(:id)
+
+      id = response_json[:id]
+      expect(current_user.course_ratings.find(id).score).to eq(rating[:score])
+
+      post :rating, params: { course_id: course.id, **new_rating }
+      expect(response).to have_http_status(:created)
+
+      current_user.reload
+      expect(current_user.course_ratings.find(id).score).to eq(new_rating[:score])
     end
   end
 
