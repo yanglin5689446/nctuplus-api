@@ -73,26 +73,71 @@ RSpec.describe My::TimetablesController, type: :controller do
   end
 
   describe 'PUT #update' do
-    context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+    context 'add course' do
+      let(:test_course) { FactoryBot.create(:course) }
+      let(:action) {{ type: :add, course_id: test_course.id }}
 
       it 'updates the requested timetable' do
         timetable = Timetable.create! valid_attributes
-        put :update, params: { id: timetable.to_param, timetable: new_attributes }
-
+        put :update, params: { id: timetable.to_param, **action }
         timetable.reload
-        skip('Add assertions for updated state')
+        expect(timetable.courses.size).to eq(1)
       end
 
       it 'renders a JSON response with the timetable' do
         timetable = Timetable.create! valid_attributes
 
-        put :update, params: { id: timetable.to_param, timetable: valid_attributes }
+        put :update, params: { id: timetable.to_param, **action }
 
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
+        response_json = JSON.parse(response.body).symbolize_keys
+        expect(response_json).to have_key(:courses)
+        courses = response_json[:courses]
+        expect(courses.find { |course| course['id'] == test_course.id }).not_to be_nil
+      end
+
+      it 'do not updates same course twice on requested timetable' do
+        timetable = Timetable.create! valid_attributes
+        put :update, params: { id: timetable.to_param, **action }
+        put :update, params: { id: timetable.to_param, **action }
+        timetable.reload
+        expect(timetable.courses.size).to eq(1)
+      end
+    end
+    context 'delete course' do
+      let(:test_course) { FactoryBot.create(:course) }
+      let(:action) {{ type: :delete, course_id: test_course.id }}
+
+      before(:each) do
+        @timetable = Timetable.create! valid_attributes
+        @timetable.courses << test_course
+        @timetable.save
+      end
+
+      it 'updates the requested timetable' do
+        put :update, params: { id: @timetable.to_param, **action }
+        @timetable.reload
+        expect(@timetable.courses).to be_empty
+      end
+
+      it 'renders a JSON response with the timetable' do
+        put :update, params: { id: @timetable.to_param, **action }
+
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq('application/json')
+        response_json = JSON.parse(response.body).symbolize_keys
+        expect(response_json).to have_key(:courses)
+        courses = response_json[:courses]
+        expect(courses.find { |course| course['id'] == test_course.id }).to be_nil
+      end
+
+      it 'do not delete same course twice on requested timetable' do
+        @timetable = Timetable.create! valid_attributes
+        put :update, params: { id: @timetable.to_param, **action }
+        put :update, params: { id: @timetable.to_param, **action }
+        @timetable.reload
+        expect(@timetable.courses).to be_empty
       end
     end
   end

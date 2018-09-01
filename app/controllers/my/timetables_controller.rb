@@ -26,11 +26,22 @@ class My::TimetablesController < ApplicationController
     end
   end
 
-  # @todo: 課表新增/刪除課程邏輯
   # PATCH/PUT /my/timetables/1
+  # 如果 current_user 不是此課表擁有者則回傳 403 forbidden
   def update
+    return render json: {}, status: :forbidden unless @timetable.user == current_user
+    type = params[:type].to_sym
+    course_id = params[:course_id].try(:to_i)
+    if type == :add
+      TimetablesCourse.where(timetable_id: @timetable.id, course_id: course_id).first_or_create
+    elsif type == :delete
+      TimetablesCourse.where(timetable_id: @timetable.id, course_id: course_id).destroy_all
+    end
+
+    @timetable.reload
+
     if @timetable
-      render json: @timetable
+      render json: @timetable, include: [:courses]
     else
       render json: @timetable.errors, status: :unprocessable_entity
     end
