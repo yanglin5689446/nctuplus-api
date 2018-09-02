@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
       resources :permanent_courses, only: [:index, :show]
       resources :courses, only: [:index, :show, :update]
-      post 'courses/:course_id/rating', to: 'courses#rating', as: :course_rating_path
+      post 'courses/:course_id/rating', to: 'courses#rating', as: :course_rating
 
       resources :users, only: [:index]
       namespace 'my' do
