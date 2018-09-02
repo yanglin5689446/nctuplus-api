@@ -23,27 +23,24 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe TimetablesController, type: :controller do
+RSpec.describe My::TimetablesController, type: :controller do
+
+  let(:current_user) { FactoryBot.create :user }
+
   # This should return the minimal set of attributes required to create a valid
   # Timetable. As you add validations to Timetable, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
-  end
+  let(:valid_attributes) { FactoryBot.attributes_for :timetable, user: current_user }
 
-  let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+  before(:each) do
+    request.headers.merge! current_user.create_new_auth_token
   end
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # TimetablesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
 
   describe 'GET #index' do
     it 'returns a success response' do
       timetable = Timetable.create! valid_attributes
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
+
       expect(response).to be_successful
     end
   end
@@ -51,7 +48,8 @@ RSpec.describe TimetablesController, type: :controller do
   describe 'GET #show' do
     it 'returns a success response' do
       timetable = Timetable.create! valid_attributes
-      get :show, params: { id: timetable.to_param }, session: valid_session
+      get :show, params: { id: timetable.to_param }
+
       expect(response).to be_successful
     end
   end
@@ -60,56 +58,86 @@ RSpec.describe TimetablesController, type: :controller do
     context 'with valid params' do
       it 'creates a new Timetable' do
         expect do
-          post :create, params: { timetable: valid_attributes }, session: valid_session
+          post :create, params: { timetable: valid_attributes }
         end.to change(Timetable, :count).by(1)
       end
 
       it 'renders a JSON response with the new timetable' do
-        post :create, params: { timetable: valid_attributes }, session: valid_session
+        post :create, params: { timetable: valid_attributes }
+
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
-        expect(response.location).to eq(timetable_url(Timetable.last))
-      end
-    end
-
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the new timetable' do
-        post :create, params: { timetable: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq('application/json')
+        expect(response.location).to eq(my_timetable_url(Timetable.last))
       end
     end
   end
 
   describe 'PUT #update' do
-    context 'with valid params' do
-      let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
-      end
+    context 'add course' do
+      let(:test_course) { FactoryBot.create(:course) }
+      let(:action) {{ type: :add, course_id: test_course.id }}
 
       it 'updates the requested timetable' do
         timetable = Timetable.create! valid_attributes
-        put :update, params: { id: timetable.to_param, timetable: new_attributes }, session: valid_session
+        put :update, params: { id: timetable.to_param, **action }
         timetable.reload
-        skip('Add assertions for updated state')
+        expect(timetable.courses.size).to eq(1)
       end
 
       it 'renders a JSON response with the timetable' do
         timetable = Timetable.create! valid_attributes
 
-        put :update, params: { id: timetable.to_param, timetable: valid_attributes }, session: valid_session
+        put :update, params: { id: timetable.to_param, **action }
+
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
+        response_json = JSON.parse(response.body).symbolize_keys
+        expect(response_json).to have_key(:courses)
+        courses = response_json[:courses]
+        expect(courses.find { |course| course['id'] == test_course.id }).not_to be_nil
+      end
+
+      it 'do not updates same course twice on requested timetable' do
+        timetable = Timetable.create! valid_attributes
+        put :update, params: { id: timetable.to_param, **action }
+        put :update, params: { id: timetable.to_param, **action }
+        timetable.reload
+        expect(timetable.courses.size).to eq(1)
       end
     end
+    context 'delete course' do
+      let(:test_course) { FactoryBot.create(:course) }
+      let(:action) {{ type: :delete, course_id: test_course.id }}
 
-    context 'with invalid params' do
-      it 'renders a JSON response with errors for the timetable' do
-        timetable = Timetable.create! valid_attributes
+      before(:each) do
+        @timetable = Timetable.create! valid_attributes
+        @timetable.courses << test_course
+        @timetable.save
+      end
 
-        put :update, params: { id: timetable.to_param, timetable: invalid_attributes }, session: valid_session
-        expect(response).to have_http_status(:unprocessable_entity)
+      it 'updates the requested timetable' do
+        put :update, params: { id: @timetable.to_param, **action }
+        @timetable.reload
+        expect(@timetable.courses).to be_empty
+      end
+
+      it 'renders a JSON response with the timetable' do
+        put :update, params: { id: @timetable.to_param, **action }
+
+        expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
+        response_json = JSON.parse(response.body).symbolize_keys
+        expect(response_json).to have_key(:courses)
+        courses = response_json[:courses]
+        expect(courses.find { |course| course['id'] == test_course.id }).to be_nil
+      end
+
+      it 'do not delete same course twice on requested timetable' do
+        @timetable = Timetable.create! valid_attributes
+        put :update, params: { id: @timetable.to_param, **action }
+        put :update, params: { id: @timetable.to_param, **action }
+        @timetable.reload
+        expect(@timetable.courses).to be_empty
       end
     end
   end
@@ -118,7 +146,8 @@ RSpec.describe TimetablesController, type: :controller do
     it 'destroys the requested timetable' do
       timetable = Timetable.create! valid_attributes
       expect do
-        delete :destroy, params: { id: timetable.to_param }, session: valid_session
+        delete :destroy, params: { id: timetable.to_param }
+
       end.to change(Timetable, :count).by(-1)
     end
   end

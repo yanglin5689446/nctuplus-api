@@ -7,14 +7,15 @@ class User < ActiveRecord::Base
          :recoverable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_one :user
   has_many :users_events
   has_many :events, through: :users_events
   has_many :users_courses
   has_many :courses, through: :users_courses
   has_many :users_course_ratings
   has_many :course_ratings, through: :users_course_ratings
-  has_many :timetable
+  has_many :past_exams, foreign_key: :uploader_id
+  has_many :books
+  has_many :timetables
 
   validates :email, uniqueness: true
   validates :name, length: { maximum: 16, message: '姓名過長(max:16)' }

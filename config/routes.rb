@@ -17,7 +17,12 @@ Rails.application.routes.draw do
       post 'courses/:course_id/rating', to: 'courses#rating', as: :course_rating_path
 
       resources :users, only: [:index]
-      scope 'users/(:id)' do
+      namespace 'my' do
+        get '/books', to: 'info#books', as: :my_books
+        get '/events', to: 'info#events', as: :my_events
+        get '/courses', to: 'info#courses', as: :my_courses
+        get '/past_exams', to: 'info#past_exams', as: :my_past_exams
+        get '/graduation_progress', to: 'info#graduation_progress', as: :my_graduation_progress
         resources :timetables
       end
     end
