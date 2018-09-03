@@ -98,4 +98,56 @@ RSpec.describe EventsController, type: :controller do
       end.to change(Event, :count).by(-1)
     end
   end
+
+  describe 'action' do
+    let(:valid_action) {{ status: :follow }}
+    let(:new_action) {{ status: :participate }}
+    let(:invalid_action) {{ status: :yee }}
+    let(:current_user) { FactoryBot.create :user }
+    before(:each) do
+      request.headers.merge! current_user.create_new_auth_token
+      @event = Event.create! valid_attributes
+    end
+
+    context 'with valid params' do
+      it 'renders a JSON response with new user event' do
+        post :action, params: { event_id: @event.to_param, **valid_action }, session: valid_session
+        expect(response).to have_http_status(:created)
+        expect(response.content_type).to eq('application/json')
+      end
+
+      it 'create user event' do
+        post :action, params: { event_id: @event.to_param, **valid_action }, session: valid_session
+        result = UsersEvent.where(user_id: current_user.id, event_id: @event.id).first
+        expect(result).not_to be_nil
+      end
+      it 'update user event when user event already exists' do
+        user_event = UsersEvent.create!(
+          user_id: current_user.id,
+          event_id: @event.id,
+          status: valid_action[:status]
+        )
+        post :action, params: { event_id: @event.to_param, **new_action }, session: valid_session
+        user_event.reload
+        expect(user_event.status.to_sym).to eq(new_action[:status])
+      end
+      it 'delete user event' do
+        user_event = UsersEvent.create!(
+          user_id: current_user.id,
+          event_id: @event.id,
+          status: valid_action[:status]
+        )
+        delete :revoke_action, params: { event_id: @event.to_param }, session: valid_session
+        result = UsersEvent.where(user_id: current_user.id, event_id: @event.id).first
+        expect(result).to be_nil
+      end
+    end
+    context 'with invalid params' do
+      it 'would not create user event' do
+        post :action, params: { event_id: @event.to_param, **invalid_action }, session: valid_session
+        result = UsersEvent.where(user_id: current_user.id, event_id: @event.id).first
+        expect(result).to be_nil
+      end
+    end
+  end
 end
