@@ -19,6 +19,9 @@ Metrics/ClassLength:
 Metrics/AbcSize:
   Max: 30
 
+Metrics/BlockLength:
+  Max: 50
+
 # Mixing the styles looks just silly.
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
