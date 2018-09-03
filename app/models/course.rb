@@ -41,7 +41,7 @@ class Course < ApplicationRecord
 
   # 重載 json serializer，改寫 time_slots
   # @todo: 用 fast_jsonapi?
-  def as_json(options = {})
+  def serializable_hash(options = {})
     super({ **options, except: :time_slots }).tap do |result|
       result[:time_slots] = convert_time_slots
     end
