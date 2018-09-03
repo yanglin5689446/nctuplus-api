@@ -40,6 +40,12 @@ class EventsController < ApplicationController
     @event.destroy
   end
 
+  # POST /events/1/action
+  def action; end
+
+  # DELETE /events/1/action
+  def revoke_action; end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
