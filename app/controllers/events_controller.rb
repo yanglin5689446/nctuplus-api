@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :action, :revoke_action]
+  before_action :set_event, only: [:show, :update, :destroy]
   before_action :authenticate_user!, only: [:action, :revoke_action]
 
   # GET /events
@@ -41,24 +41,19 @@ class EventsController < ApplicationController
     @event.destroy
   end
 
-  # POST /events/1/action
-  def action
-    status = params[:status]
-    if UsersEvent.statuses.include? status
-      status = UsersEvent.statuses[status]
-    else
-      render json: {}, status: :unprocessable_entity && return
-    end
-    new_action = UsersEvent
-                 .where(user_id: current_user.id, event_id: @event.id)
-                 .first_or_initialize
-    new_action.update(event_id: @event.id, user_id: current_user.id, status: status)
-    render json: new_action, status: :created
+  # POST /events/1/follow
+  def follow
+    event_id = params[:event_id]
+    new_follow = UsersEvent
+                 .where(user_id: current_user.id, event_id: event_id)
+                 .first_or_create
+    render json: new_follow, status: :created
   end
 
-  # DELETE /events/1/action
-  def revoke_action
-    UsersEvent.where(user_id: current_user.id, event_id: @event.id).destroy_all
+  # DELETE /events/1/follow
+  def unfollow
+    event_id = params[:event_id]
+    UsersEvent.where(user_id: current_user.id, event_id: event_id).destroy_all
     render json: {}, status: :no_content
   end
 
