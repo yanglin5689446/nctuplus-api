@@ -11,8 +11,8 @@ Rails.application.routes.draw do
       resources :books
       resources :past_exams
       resources :events do
-        post 'action', to: 'events#action', as: :action
-        delete 'action', to: 'events#revoke_action', as: :revoke_action
+        post 'follow', to: 'events#follow', as: :follow
+        delete 'follow', to: 'events#unfollow', as: :unfollow
       end
 
       resources :permanent_courses, only: [:index, :show]
