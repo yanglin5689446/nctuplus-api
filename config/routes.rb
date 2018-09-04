@@ -10,7 +10,10 @@ Rails.application.routes.draw do
       resources :bulletins
       resources :books
       resources :past_exams
-      resources :events
+      resources :events do
+        post 'action', to: 'events#action', as: :action
+        delete 'action', to: 'events#revoke_action', as: :revoke_action
+      end
 
       resources :permanent_courses, only: [:index, :show]
       resources :courses, only: [:index, :show, :update]
