@@ -38,6 +38,7 @@ class CoursesController < ApplicationController
 
   # @todo: 現在只是新建 course_rating model
   # 更新評分的 action，若已經評分過該課程的該面向則更新分數
+  # POST /courses/:id/rating
   def rating
     rating_params = params.permit(:category, :score, :course_id)
     # 確認先前是否已經評分過
@@ -63,6 +64,22 @@ class CoursesController < ApplicationController
     else
       render json: course_rating.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /courses/:id/favorite
+  def favorite
+    course_id = params[:course_id]
+    user_course = UsersCourse
+                  .where(user_id: current_user.id, course_id: course_id)
+                  .first_or_create
+    render json: user_course, status: :created
+  end
+
+  # DELETE /courses/:id/favorite
+  def remove_favorite
+    course_id = params[:course_id]
+    UsersCourse.where(user_id: current_user.id, course_id: course_id).destroy_all
+    render json: {}, status: :no_content
   end
 
   private
