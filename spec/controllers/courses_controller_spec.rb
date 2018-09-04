@@ -107,4 +107,37 @@ RSpec.describe CoursesController, type: :controller do
     end
   end
 
+  describe 'favorite' do
+    let(:current_user) { FactoryBot.create :user }
+    before(:each) do
+      request.headers.merge! current_user.create_new_auth_token
+      @course = Course.create! valid_attributes
+    end
+
+    it 'renders a JSON response with new course-favorite request' do
+      post :favorite, params: { course_id: @course.to_param }
+      expect(response).to have_http_status(:created)
+      expect(response.content_type).to eq('application/json')
+    end
+
+    it 'add user favorite course' do
+      post :favorite, params: { course_id: @course.to_param }
+      result = UsersCourse.where(user_id: current_user.id, course_id: @course.id).first
+      expect(result).not_to be_nil
+    end
+
+    it 'would not add course to user favorite twice' do
+      UsersCourse.create! user_id: current_user.id, course_id: @course.id
+      post :favorite, params: { course_id: @course.to_param }
+      result = UsersCourse.where(user_id: current_user.id, course_id: @course.id).all
+
+      expect(result.size).to eq(1)
+    end
+    it 'delete user action' do
+      UsersCourse.create! user_id: current_user.id, course_id: @course.id
+      delete :remove_favorite, params: { course_id: @course.to_param }
+      result = UsersCourse.where(user_id: current_user.id, course_id: @course.id).first
+      expect(result).to be_nil
+    end
+  end
 end
