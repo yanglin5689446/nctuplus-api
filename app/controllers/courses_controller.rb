@@ -27,6 +27,7 @@ class CoursesController < ApplicationController
     ]
   end
 
+  # @todo: 當資料有改動的時候更新 last_edit_user_id
   # PATCH/PUT /courses/1
   def update
     if @course.update(course_params)
@@ -36,7 +37,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  # @todo: 現在只是新建 course_rating model
   # 更新評分的 action，若已經評分過該課程的該面向則更新分數
   # POST /courses/:id/rating
   def rating
