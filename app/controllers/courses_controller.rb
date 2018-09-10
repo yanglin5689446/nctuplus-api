@@ -17,24 +17,12 @@ class CoursesController < ApplicationController
       total_pages: @courses.total_pages,
       total_count: @courses.total_count,
       data: @courses
-    }, include: %I[
-      semester
-      last_edit_user
-      permanent_course
-      teachers
-      ratings
-    ]
+    }
   end
 
   # GET /courses/1
   def show
-    render json: @course, include: %I[
-      semester
-      last_edit_user
-      permanent_course
-      teachers
-      ratings
-    ]
+    render json: @course
   end
 
   # @todo: 當資料有改動的時候更新 last_edit_user_id
