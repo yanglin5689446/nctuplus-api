@@ -97,13 +97,13 @@ RSpec.describe CoursesController, type: :controller do
       expect(response_json).to have_key(:id)
 
       id = response_json[:id]
-      expect(current_user.ratings.find(id).score).to eq(rating[:score])
+      expect(current_user.course_ratings.find(id).score).to eq(rating[:score])
 
       post :rating, params: { course_id: course.id, **new_rating }
       expect(response).to have_http_status(:created)
 
       current_user.reload
-      expect(current_user.ratings.find(id).score).to eq(new_rating[:score])
+      expect(current_user.course_ratings.find(id).score).to eq(new_rating[:score])
     end
   end
 
