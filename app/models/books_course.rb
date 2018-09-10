@@ -1,4 +1,4 @@
 class BooksCourse < ApplicationRecord
   belongs_to :book
-  belongs_to :event
+  belongs_to :course
 end
