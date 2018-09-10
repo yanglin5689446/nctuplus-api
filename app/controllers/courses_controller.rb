@@ -6,7 +6,9 @@ class CoursesController < ApplicationController
   def index
     page = params[:page].try(:to_i) || 1
     per_page = params[:per_page].try(:to_i) || 25
-    filters = Course.ransack(params[:q])
+    filters = Course
+              .includes(:semester, :last_edit_user, :permanent_course, :teachers, :ratings)
+              .ransack(params[:q])
 
     @courses = filters.result(distnct: true).page(page).per(per_page)
 
@@ -15,15 +17,23 @@ class CoursesController < ApplicationController
       total_pages: @courses.total_pages,
       total_count: @courses.total_count,
       data: @courses
-    }
+    }, include: %I[
+      semester
+      last_edit_user
+      permanent_course
+      teachers
+      ratings
+    ]
   end
 
   # GET /courses/1
   def show
     render json: @course, include: %I[
-      permanent_course
+      semester
       last_edit_user
-      course_ratings
+      permanent_course
+      teachers
+      ratings
     ]
   end
 
