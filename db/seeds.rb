@@ -9,7 +9,7 @@
 unless Course.all.size >= 1000
   100.times do
     course = FactoryBot.create :course
-    course.course_ratings << Array.new(rand(5)).map { FactoryBot.create :course_rating }
+    course.ratings << Array.new(rand(5)).map { FactoryBot.create :course_rating }
   end
 end
 

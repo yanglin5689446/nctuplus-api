@@ -8,7 +8,7 @@ class Course < ApplicationRecord
   has_many :users, through: :users_courses
   has_many :books_courses
   has_many :books, through: :books_courses
-  has_many :course_ratings
+  has_many :ratings, foreign_key: :course_id, class_name: :CourseRating
 
   enum time_slot_code: %I[M N A B C D X E F G H Y I J k L]
 
@@ -39,11 +39,18 @@ class Course < ApplicationRecord
       end
   end
 
-  # 重載 json serializer，改寫 time_slots
-  # @todo: 用 fast_jsonapi?
+  # 重載 json serializer
+  # @todo:
   def serializable_hash(options = {})
-    super({ **options, except: :time_slots }).tap do |result|
+    # relation 的 foreign_key 不需要了直接移除
+    excepts = %I[time_slots semester permanent_course_id]
+    super({ **options, excepts: excepts }).tap do |result|
       result[:time_slots] = convert_time_slots
+      # 預設直接引入 relation, 不用在 controller 裡自己加
+      result[:semester] = semester
+      result[:permanent_course] = permanent_course
+      result[:teachers] = teachers
+      result[:ratings] = ratings
     end
   end
 end

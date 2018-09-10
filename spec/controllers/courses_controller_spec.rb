@@ -85,7 +85,7 @@ RSpec.describe CoursesController, type: :controller do
       course = Course.create! valid_attributes
       post :rating, params: { course_id: course.id, **rating }
       expect(response).to have_http_status(:created)
-      expect(course.course_ratings.size).to eq 1
+      expect(course.ratings.size).to eq 1
     end
     it 'update user rating if a course rating already exists' do
       course = Course.create! valid_attributes

@@ -6,7 +6,9 @@ class CoursesController < ApplicationController
   def index
     page = params[:page].try(:to_i) || 1
     per_page = params[:per_page].try(:to_i) || 25
-    filters = Course.ransack(params[:q])
+    filters = Course
+              .includes(:semester, :last_edit_user, :permanent_course, :teachers, :ratings)
+              .ransack(params[:q])
 
     @courses = filters.result(distnct: true).page(page).per(per_page)
 
@@ -20,11 +22,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/1
   def show
-    render json: @course, include: %I[
-      permanent_course
-      last_edit_user
-      course_ratings
-    ]
+    render json: @course
   end
 
   # @todo: 當資料有改動的時候更新 last_edit_user_id
