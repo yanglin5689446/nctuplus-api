@@ -36,6 +36,7 @@ gem 'devise_token_auth'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-nctu'
 
 # Use faker to generate fake data
 gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
