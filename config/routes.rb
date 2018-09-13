@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :books
       resources :past_exams
       resources :events do
+        get 'follow', to: 'events#isfollow', as: :isfollow
         post 'follow', to: 'events#follow', as: :follow
         delete 'follow', to: 'events#unfollow', as: :unfollow
       end

@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy]
-  before_action :authenticate_user!, only: [:action, :revoke_action]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /events
   def index
@@ -19,6 +19,7 @@ class EventsController < ApplicationController
   # POST /events
   def create
     @event = Event.new(event_params)
+    @event.user_id = current_user.id
 
     if @event.save
       render json: @event, status: :created, location: @event
@@ -39,6 +40,16 @@ class EventsController < ApplicationController
   # DELETE /events/1
   def destroy
     @event.destroy
+  end
+
+  # GET /events/1/follw
+  def isfollow
+    event_id = params[:event_id]
+    if UsersEvent.find_by(event_id: event_id, user_id: current_user.id)
+      render json: { follow: true }, status: :ok
+    else
+      render json: { follow: false }, status: :ok
+    end
   end
 
   # POST /events/1/follow
