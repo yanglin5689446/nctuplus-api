@@ -42,6 +42,16 @@ class EventsController < ApplicationController
     @event.destroy
   end
 
+  # GET /events/1/follw
+  def isfollow
+    event_id = params[:event_id]
+    if UsersEvent.find_by(event_id: event_id, user_id: current_user.id)
+      render json: { follow: true }, status: :ok
+    else
+      render json: { follow: false }, status: :ok
+    end
+  end
+
   # POST /events/1/follow
   def follow
     event_id = params[:event_id]
