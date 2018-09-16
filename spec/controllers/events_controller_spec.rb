@@ -49,6 +49,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid params' do
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       it 'creates a new Event' do
         expect do
           post :create, params: { event: valid_attributes }
@@ -66,6 +70,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe 'PUT #update' do
     context 'with valid params' do
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       let(:new_attributes) {{ title: :yee }}
 
       it 'updates the requested event' do
@@ -86,7 +94,9 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let(:current_user) { FactoryBot.create :user }
     it 'destroys the requested event' do
+      request.headers.merge! current_user.create_new_auth_token
       event = Event.create! valid_attributes
       expect do
         delete :destroy, params: { id: event.to_param }
