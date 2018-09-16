@@ -40,11 +40,12 @@ class Course < ApplicationRecord
   end
 
   # 重載 json serializer
-  # @todo:
-  def serializable_hash(options = {})
+  def serializable_hash(options = nil)
+    options = options.try(:dup) || {}
+
     # relation 的 foreign_key 不需要了直接移除
-    excepts = %I[time_slots semester permanent_course_id]
-    super({ **options, excepts: excepts }).tap do |result|
+    excepts = %I[time_slots semester_id permanent_course_id]
+    super({ **options, except: excepts }).tap do |result|
       result[:time_slots] = convert_time_slots
       # 預設直接引入 relation, 不用在 controller 裡自己加
       result[:semester] = semester
