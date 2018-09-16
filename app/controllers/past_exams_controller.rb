@@ -5,7 +5,7 @@ class PastExamsController < ApplicationController
   def index
     page = params[:page].try(:to_i) || 1
     per_page = params[:per_page].try(:to_i) || 25
-    filters = PastExam.ransack(params[:q])
+    filters = PastExam.includes(:course, :uploader).ransack(params[:q])
 
     @past_exams = filters.result(distnct: true).page(page).per(per_page)
 
@@ -51,7 +51,7 @@ class PastExamsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_past_exam
-    @past_exam = PastExam.find(params[:id])
+    @past_exam = PastExam.includes(:course, :uploader).find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.

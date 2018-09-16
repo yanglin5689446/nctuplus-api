@@ -7,7 +7,9 @@ class Book < ApplicationRecord
 
   validates_numericality_of :price, only_integer: true
 
-  def serializable_hash(options = {})
+  def serializable_hash(options = nil)
+    options = options.try(:dup) || {}
+
     super({ **options, except: :user_id }).tap do |result|
       result[:user] = user
       result[:courses] = courses
