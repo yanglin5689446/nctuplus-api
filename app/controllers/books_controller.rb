@@ -40,7 +40,7 @@ class BooksController < ApplicationController
     @book.user_id = @current_user.id
 
     if @book.save
-      response = response_assignment(@book, current_user)
+      response = response_assignment(@book, @current_user)
       render json: response
     else
       render json: @book.errors, status: :unprocessable_entity
@@ -51,7 +51,7 @@ class BooksController < ApplicationController
   def update
     if @book.update(book_params)
 
-      response = response_assignment(@book, current_user)
+      response = response_assignment(@book, @current_user)
 
       render json: response
     else
