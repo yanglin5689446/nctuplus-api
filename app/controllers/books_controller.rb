@@ -41,7 +41,7 @@ class BooksController < ApplicationController
 
     if @book.save
       response = response_assignment(@book, current_user)
-      render json: response, status: :created
+      render json: response, status: :created, location: response
     else
       render json: @book.errors, status: :unprocessable_entity
     end
