@@ -58,6 +58,10 @@ RSpec.describe BooksController, type: :controller do
 
   describe 'POST #create' do
     context 'with valid params' do
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       it 'creates a new Book' do
         expect do
           post :create, params: { book: valid_attributes }, session: valid_session
@@ -73,6 +77,10 @@ RSpec.describe BooksController, type: :controller do
     end
 
     context 'with invalid params' do
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       it 'renders a JSON response with errors for the new book' do
         post :create, params: { book: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
@@ -84,7 +92,10 @@ RSpec.describe BooksController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) {{ name: :foo_baz }}
-
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       it 'updates the requested book' do
         book = Book.create! valid_attributes
         put :update, params: { id: book.to_param, book: new_attributes }, session: valid_session
@@ -102,6 +113,10 @@ RSpec.describe BooksController, type: :controller do
     end
 
     context 'with invalid params' do
+      let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
       it 'renders a JSON response with errors for the book' do
         book = Book.create! valid_attributes
 
@@ -113,6 +128,10 @@ RSpec.describe BooksController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
     it 'destroys the requested book' do
       book = Book.create! valid_attributes
       expect do
