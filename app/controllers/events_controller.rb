@@ -13,6 +13,7 @@ class EventsController < ApplicationController
   def show
     @event.view_count += 1
     @event.save
+
     render json: @event
   end
 
