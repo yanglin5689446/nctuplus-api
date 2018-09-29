@@ -78,6 +78,7 @@ RSpec.describe EventsController, type: :controller do
 
       it 'updates the requested event' do
         event = Event.create! valid_attributes
+        event.update_attributes(:user => current_user)
         put :update, params: { id: event.to_param, event: new_attributes }
         event.reload
         expect(event.title).to eq('yee')
@@ -85,9 +86,23 @@ RSpec.describe EventsController, type: :controller do
 
       it 'renders a JSON response with the event' do
         event = Event.create! valid_attributes
-
+        event.update_attributes(:user => current_user)
         put :update, params: { id: event.to_param, event: valid_attributes }
         expect(response).to have_http_status(:ok)
+        expect(response.content_type).to eq('application/json')
+      end
+
+      it 'other user updates the requested event' do
+        event = Event.create! valid_attributes
+        put :update, params: { id: event.to_param, event: new_attributes }
+        event.reload
+        expect(event.title).not_to eq('yee')
+      end
+
+      it 'renders a JSON response with 404 with the event if other user updates the requested event' do
+        event = Event.create! valid_attributes
+        put :update, params: { id: event.to_param, event: new_attributes }
+        expect(response).to have_http_status(:not_found)
         expect(response.content_type).to eq('application/json')
       end
     end
@@ -98,9 +113,18 @@ RSpec.describe EventsController, type: :controller do
     it 'destroys the requested event' do
       request.headers.merge! current_user.create_new_auth_token
       event = Event.create! valid_attributes
+      event.update_attributes(:user => current_user)
       expect do
         delete :destroy, params: { id: event.to_param }
       end.to change(Event, :count).by(-1)
+    end
+
+    it 'other user destroys the requested event' do
+      request.headers.merge! current_user.create_new_auth_token
+      event = Event.create! valid_attributes
+      expect do
+        delete :destroy, params: { id: event.to_param }
+      end.not_to change(Event, :count)
     end
   end
 
