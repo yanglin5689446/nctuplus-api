@@ -7,8 +7,8 @@ services:
       - dbdata:/var/lib/mysql
       - ./mysql_conf:/etc/mysql/conf.d
     environment:
-      - MYSQL_ROOT_PASSWORD
-      - MYSQL_DATABASE
+      - MYSQL_ROOT_PASSWORD = nctuplus5566
+      - MYSQL_DATABASE = nctuplus_development
 
   app:
     build:
