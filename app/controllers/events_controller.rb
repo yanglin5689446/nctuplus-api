@@ -31,7 +31,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     if current_user.id != @event.user_id
-      render json: { "error": "user doesn't match" }, status: :not_found
+      render json: { "error": "user doesn't match" }, status: :unauthorized
     elsif @event.update(event_params)
       render json: @event
     else
@@ -42,7 +42,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   def destroy
     if current_user.id != @event.user_id
-      render json: { "error": "user doesn't match" }, status: :not_found
+      render json: { "error": "user doesn't match" }, status: :unauthorized
     else
       @event.destroy
     end
