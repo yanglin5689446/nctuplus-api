@@ -92,17 +92,17 @@ RSpec.describe EventsController, type: :controller do
         expect(response.content_type).to eq('application/json')
       end
 
-      it 'other user updates the requested event' do
+      it 'will not update if current user is not the event creator' do
         event = Event.create! valid_attributes
         put :update, params: { id: event.to_param, event: new_attributes }
         event.reload
         expect(event.title).not_to eq('yee')
       end
 
-      it 'renders a JSON response with 404 with the event if other user updates the requested event' do
+      it 'renders a JSON response with 403 unauthorized if current user is not the event creator' do
         event = Event.create! valid_attributes
         put :update, params: { id: event.to_param, event: new_attributes }
-        expect(response).to have_http_status(:not_found)
+        expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to eq('application/json')
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe EventsController, type: :controller do
       end.to change(Event, :count).by(-1)
     end
 
-    it 'other user destroys the requested event' do
+    it 'will not destroy event if current user is not the event creator' do
       request.headers.merge! current_user.create_new_auth_token
       event = Event.create! valid_attributes
       expect do
