@@ -57,6 +57,10 @@ RSpec.describe BooksController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:current_user) { FactoryBot.create :user }
+      before(:each) do
+        request.headers.merge! current_user.create_new_auth_token
+      end
     context 'with valid params' do
       it 'creates a new Book' do
         expect do
@@ -82,11 +86,17 @@ RSpec.describe BooksController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let(:new_attributes) {{ name: :foo_baz }}
+    let(:current_user) { FactoryBot.create :user }
+    before(:each) do
+      request.headers.merge! current_user.create_new_auth_token
+    end
+
     context 'with valid params' do
-      let(:new_attributes) {{ name: :foo_baz }}
 
       it 'updates the requested book' do
         book = Book.create! valid_attributes
+        book.update_attributes(user: current_user)
         put :update, params: { id: book.to_param, book: new_attributes }, session: valid_session
         book.reload
         expect(book.name).to eq('foo_baz')
@@ -94,7 +104,7 @@ RSpec.describe BooksController, type: :controller do
 
       it 'renders a JSON response with the book' do
         book = Book.create! valid_attributes
-
+        book.update_attributes(user: current_user)
         put :update, params: { id: book.to_param, book: valid_attributes }, session: valid_session
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to eq('application/json')
@@ -104,20 +114,48 @@ RSpec.describe BooksController, type: :controller do
     context 'with invalid params' do
       it 'renders a JSON response with errors for the book' do
         book = Book.create! valid_attributes
-
+        book.update_attributes(user: current_user)
         put :update, params: { id: book.to_param, book: invalid_attributes }, session: valid_session
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.content_type).to eq('application/json')
+      end
+    end
+
+    context 'with current user is not the book creator' do
+      it 'will not update the requested book record' do
+        book = Book.create! valid_attributes
+        put :update, params: { id: book.to_param, book: new_attributes }
+        book.reload
+        expect(book.name).not_to eq('foo_baz')
+      end
+
+      it 'renders a JSON respons with 401 unauthorized' do
+        book = Book.create! valid_attributes
+        put :update, params: { id: book.to_param, book: new_attributes }
+        expect(response).to have_http_status(:unauthorized)
         expect(response.content_type).to eq('application/json')
       end
     end
   end
 
   describe 'DELETE #destroy' do
+    let(:current_user) { FactoryBot.create :user }
+    before(:each) do
+      request.headers.merge! current_user.create_new_auth_token
+    end
     it 'destroys the requested book' do
       book = Book.create! valid_attributes
+      book.update_attributes(:user => current_user)
       expect do
         delete :destroy, params: { id: book.to_param }, session: valid_session
       end.to change(Book, :count).by(-1)
+    end
+
+    it 'will not destroy book if current user is not the book creator' do
+      book = Book.create! valid_attributes
+      expect do
+        delete :destroy, params: { id: book.to_param }, session: valid_session
+      end.not_to change(Book, :count)
     end
   end
 end

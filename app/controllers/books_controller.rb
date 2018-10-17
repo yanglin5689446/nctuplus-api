@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   before_action :set_book, only: [:show, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /books
   def index
@@ -36,7 +37,9 @@ class BooksController < ApplicationController
 
   # PATCH/PUT /books/1
   def update
-    if @book.update(book_params)
+    if current_user.id != @book.user_id
+      render json: { "error": "user doesn't match" }, status: :unauthorized
+    elsif @book.update(book_params)
       render json: @book
     else
       render json: @book.errors, status: :unprocessable_entity
@@ -45,7 +48,11 @@ class BooksController < ApplicationController
 
   # DELETE /books/1
   def destroy
-    @book.destroy
+    if current_user.id != @book.user_id
+      render json: { "error": "user doesn't match" }, status: :unauthorized
+    else
+      @book.destroy
+    end
   end
 
   private
