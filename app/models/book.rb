@@ -11,8 +11,12 @@ class Book < ApplicationRecord
     options = options.try(:dup) || {}
 
     super({ **options, except: :user_id }).tap do |result|
-      result[:user] = user
-      result[:courses] = courses
+      result[:user] = user.serializable_hash(only: [:id, :name])
+      result[:courses] = [].tap do |i|
+        courses.each do |course|
+          i << course.serializable_hash_for_books
+        end
+      end
     end
   end
 end

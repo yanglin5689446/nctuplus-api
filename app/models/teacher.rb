@@ -7,4 +7,11 @@ class Teacher < ApplicationRecord
   self.primary_key = :id
   has_many :teachers_courses
   has_many :courses, through: :teachers_courses
+
+  def serializable_hash_for_books
+    {}.tap do |result|
+      result[:id] = id
+      result[:name] = name
+    end
+  end
 end
