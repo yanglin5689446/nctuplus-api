@@ -66,8 +66,8 @@ class BooksController < ApplicationController
   def book_params
     params.fetch(:book, {})
           .permit(
-            :time, :name, :authors, :info, :cover_image,
-            :preview_url, :price, :status
+            :name, :isbn, :authors, :info, :contact_way, :cover_image,
+            :price
           )
   end
 end
