@@ -15,5 +15,6 @@ FactoryBot.define do
     price { Faker::Number.between(0, 3000) }
     status { Faker::Number.between(0, 3) }
     view_count { 0 }
+    contact_way { Faker::Internet.email }
   end
 end

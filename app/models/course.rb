@@ -54,4 +54,16 @@ class Course < ApplicationRecord
       result[:ratings] = ratings
     end
   end
+
+  def serializable_hash_for_books
+    {}.tap do |result|
+      result[:course_id] = id
+      result[:course_name] = permanent_course.name
+      result[:teachers] = [].tap do |i|
+        teachers.each do |teacher|
+          i << teacher.serializable_hash_for_books
+        end
+      end
+    end
+  end
 end

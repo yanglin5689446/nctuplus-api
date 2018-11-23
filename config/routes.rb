@@ -7,7 +7,9 @@ Rails.application.routes.draw do
       resources :teachers, only: [:index]
       resources :semesters, only: [:index]
       resources :bulletins
-      resources :books
+      resources :books do
+        patch 'status', to: 'books#status', as: :status
+      end
       resources :past_exams
       resources :events do
         post 'follow', to: 'events#follow', as: :follow

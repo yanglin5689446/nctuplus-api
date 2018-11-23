@@ -1,5 +1,7 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :update, :destroy]
+  before_action :set_book, only: [:show, :update, :destroy, :status]
+  before_action :authenticate_user!, except: [:index, :show]
+  wrap_parameters Book, format: :json, exclude: []
 
   # GET /books
   def index
@@ -25,8 +27,8 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
-    @book = Book.new(book_params)
-
+    @book = current_user.books.build(book_params)
+    @book.add_applicable_courses(course_id_array)
     if @book.save
       render json: @book, status: :created, location: @book
     else
@@ -36,8 +38,21 @@ class BooksController < ApplicationController
 
   # PATCH/PUT /books/1
   def update
-    if @book.update(book_params)
+    if current_user.id != @book.user_id
+      render json: { "error": "user doesn't match" }, status: :unauthorized
+    elsif @book.update_book(book_params, course_id_array)
       render json: @book
+    else
+      render json: @book.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /books/1/status
+  def status
+    if current_user.id != @book.user_id
+      render json: { "error": "user doesn't match" }, status: :unauthorized
+    elsif @book.update_attributes(status: params[:status])
+      render json: { id: @book.id, status: @book.status }, status: :ok
     else
       render json: @book.errors, status: :unprocessable_entity
     end
@@ -45,22 +60,41 @@ class BooksController < ApplicationController
 
   # DELETE /books/1
   def destroy
-    @book.destroy
+    if current_user.id != @book.user_id
+      render json: { "error": "user doesn't match" }, status: :unauthorized
+    else
+      @book.destroy
+    end
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_book
-    @book = Book.includes(:courses, :user).find(params[:id])
+    @book = Book.includes(:courses, :user).find(params[:id] || params[:book_id])
   end
 
   # Only allow a trusted parameter "white list" through.
   def book_params
     params.fetch(:book, {})
           .permit(
-            :time, :name, :authors, :info, :cover_image,
-            :preview_url, :price, :status
+            :name, :isbn, :authors, :info, :contact_way, :cover_image,
+            :price
           )
+  end
+
+  # Get and sort all the course_id within parameters
+  def course_id_array
+    if params.fetch(:book, {}).key?(:courses)
+      params.fetch(:book, {})
+            .permit(
+              courses: [:course_id]
+            )
+            .fetch(:courses)
+            .map { |course| course[:course_id] }
+            .try(:sort_by!) { |id| id }
+    else
+      []
+    end
   end
 end
